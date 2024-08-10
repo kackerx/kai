@@ -129,6 +129,13 @@ func Test_router_findRoute(t *testing.T) {
 				fmt.Println("hehe")
 			},
 		},
+		{
+			method: http.MethodGet,
+			path:   "/order/detail/:id",
+			handler: func(ctx *Context) {
+				fmt.Println("hehe")
+			},
+		},
 	}
 	r := newRouter()
 	for _, route := range testRoute {
@@ -162,6 +169,17 @@ func Test_router_findRoute(t *testing.T) {
 			"/order/add",
 			&node{
 				path:    "add",
+				chidren: nil,
+				handler: nil,
+			},
+			true,
+		},
+		{
+			"hehe",
+			http.MethodGet,
+			"/order/detail/100",
+			&node{
+				path:    ":id",
 				chidren: nil,
 				handler: nil,
 			},

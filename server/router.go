@@ -51,10 +51,17 @@ func (r *router) findRoute(method string, path string) (res *node, ok bool) {
 	for _, seg := range segs[1:] {
 		var child *node
 		if child, ok = root.chidren[seg]; !ok {
-			return root.starChildren, root.starChildren != nil
+			if root.paramChild != nil {
+				root = root.paramChild
+				root.pathParams[root.path[1:]] = seg
+			} else if root.starChildren != nil {
+				root = root.starChildren
+			} else {
+				return nil, false
+			}
+		} else {
+			root = child
 		}
-
-		root = child
 	}
 
 	return root, true
@@ -65,18 +72,24 @@ func (r *router) findRoute(method string, path string) (res *node, ok bool) {
 type node struct {
 	path         string
 	chidren      map[string]*node
+	paramChild   *node
+	pathParams   map[string]string
 	starChildren *node
 	handler      HandleFunc
 }
 
 func newNode(path string, handler HandleFunc) *node {
-	return &node{path: path, chidren: make(map[string]*node), handler: handler}
+	return &node{path: path, chidren: make(map[string]*node), handler: handler, pathParams: make(map[string]string)}
 }
 
 func (n *node) childOrCreate(seg string) (child *node) {
-	if seg == "*" {
+	if seg == "*" { // 通配符匹配
 		n.starChildren = newNode("*", nil)
 		return n.starChildren
+	}
+	if strings.HasPrefix(seg, ":") { // 参数匹配
+		n.paramChild = newNode(seg, nil)
+		return n.paramChild
 	}
 	if child, ok := n.chidren[seg]; ok {
 		return child

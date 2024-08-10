@@ -32,6 +32,7 @@ func (h *HTTPServer) serve(ctx *Context) {
 		return
 	}
 
+	ctx.pathParams = node.pathParams
 	node.handler(ctx)
 }
 

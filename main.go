@@ -22,6 +22,10 @@ func main() {
 		ctx.Html(http.StatusOK, ctx.Path())
 	})
 
+	kai.Get("/order/detail/:id", func(ctx *server.Context) {
+		ctx.Html(http.StatusOK, ctx.Get("id"))
+	})
+
 	fmt.Println("listen on [:9999]")
 	if err := http.ListenAndServe(":9999", kai); err != nil {
 		panic(err)
