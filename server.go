@@ -1,6 +1,8 @@
-package server
+package kai
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type HandleFunc func(ctx *Context)
 
@@ -10,15 +12,29 @@ type Server interface {
 
 type HTTPServer struct {
 	*router
+	mlds []Middleware
 }
 
-func NewHTTPServer() *HTTPServer {
-	return &HTTPServer{router: newRouter()}
+type HTTPServerOption func(server *HTTPServer)
+
+func WithMiddleware(mlds ...Middleware) HTTPServerOption {
+	return func(server *HTTPServer) {
+		server.mlds = mlds
+	}
+}
+
+func NewHTTPServer(opts ...HTTPServerOption) *HTTPServer {
+	server := &HTTPServer{router: newRouter()}
+	for _, opt := range opts {
+		opt(server)
+	}
+
+	return server
 }
 
 func (h *HTTPServer) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	ctx := &Context{
-		req:  request,
+		Req:  request,
 		resp: writer,
 	}
 
@@ -26,14 +42,20 @@ func (h *HTTPServer) ServeHTTP(writer http.ResponseWriter, request *http.Request
 }
 
 func (h *HTTPServer) serve(ctx *Context) {
-	node, ok := h.router.findRoute(ctx.req.Method, ctx.req.URL.Path)
+	node, ok := h.router.findRoute(ctx.Req.Method, ctx.Req.URL.Path)
 	if !ok || node == nil {
 		ctx.resp.WriteHeader(http.StatusNotFound)
 		return
 	}
 
 	ctx.pathParams = node.pathParams
-	node.handler(ctx)
+	ctx.Route = node.route
+
+	root := node.handler
+	for i := len(h.mlds) - 1; i >= 0; i-- {
+		root = h.mlds[i](root)
+	}
+	root(ctx)
 }
 
 func (h *HTTPServer) AddRoute(method, path string, handler HandleFunc) {
@@ -46,4 +68,8 @@ func (h *HTTPServer) Get(path string, handler HandleFunc) {
 
 func (h *HTTPServer) Post(path string, handler HandleFunc) {
 	h.router.addRoute(http.MethodPost, path, handler)
+}
+
+func (h *HTTPServer) Start(addr string) error {
+	return http.ListenAndServe(addr, h)
 }

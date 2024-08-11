@@ -1,12 +1,15 @@
-package server
+package kai
 
 import (
 	"fmt"
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
+
+	"kai/middleware"
 )
 
 func Test_router_AddRoute(t *testing.T) {
@@ -221,4 +224,44 @@ func TestFoo(t *testing.T) {
 	bf := reflect.ValueOf(b)
 
 	assert.Equal(t, af, bf)
+}
+
+type Handler func(ctx *Context)
+
+func TestContext_BindJSON(t *testing.T) {
+	var mids []middleware.Middleware
+	root := func(c *Context) {
+		time.Sleep(time.Second)
+		fmt.Println("i am root")
+	}
+
+	mids = append(mids,
+		func(next HandleFunc) HandleFunc {
+			return func(c *Context) {
+				st := time.Now()
+				defer func() { fmt.Println("one: ", time.Since(st)) }()
+
+				fmt.Println("one before")
+				time.Sleep(time.Second * 4)
+				next(c)
+				fmt.Println("one after")
+			}
+		},
+		func(next HandleFunc) HandleFunc {
+			return func(c *Context) {
+				st := time.Now()
+				defer func() { fmt.Println("two: ", time.Since(st)) }()
+
+				fmt.Println("two before")
+				time.Sleep(time.Second * 2)
+				next(c)
+				fmt.Println("two after")
+			}
+		})
+
+	for i := len(mids) - 1; i >= 0; i-- { // 把核心业务逻辑root封装到最后一个执行, 洋葱模式调到底, 从底返回
+		root = mids[i](root)
+	}
+
+	root(&Context{})
 }

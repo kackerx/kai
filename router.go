@@ -1,4 +1,4 @@
-package server
+package kai
 
 import (
 	"fmt"
@@ -24,6 +24,7 @@ func (r *router) addRoute(method string, path string, handler HandleFunc) {
 
 	if path == "/" {
 		root.handler = handler
+		root.route = path
 		return
 	}
 
@@ -38,6 +39,7 @@ func (r *router) addRoute(method string, path string, handler HandleFunc) {
 	if root.handler != nil {
 		fmt.Printf("重复注册路由: %s\n", path)
 	}
+	root.route = path
 	root.handler = handler
 }
 
@@ -71,6 +73,7 @@ func (r *router) findRoute(method string, path string) (res *node, ok bool) {
 
 type node struct {
 	path         string
+	route        string
 	chidren      map[string]*node
 	paramChild   *node
 	pathParams   map[string]string
