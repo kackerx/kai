@@ -8,8 +8,6 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-
-	"kai/middleware"
 )
 
 func Test_router_AddRoute(t *testing.T) {
@@ -229,7 +227,7 @@ func TestFoo(t *testing.T) {
 type Handler func(ctx *Context)
 
 func TestContext_BindJSON(t *testing.T) {
-	var mids []middleware.Middleware
+	var mids []Middleware
 	root := func(c *Context) {
 		time.Sleep(time.Second)
 		fmt.Println("i am root")
