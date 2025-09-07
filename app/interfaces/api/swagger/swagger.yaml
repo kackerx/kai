@@ -1,0 +1,1447 @@
+definitions:
+  pagination.Pagination:
+    properties:
+      current:
+        description: Current Page
+        type: integer
+      pageSize:
+        description: Page Size
+        type: integer
+      total:
+        description: Total count
+        type: integer
+    type: object
+  request.LoginParam:
+    properties:
+      captcha_code:
+        description: Captcha Code
+        type: string
+      captcha_id:
+        description: Captcha ID
+        type: string
+      password:
+        description: Password(md5)
+        type: string
+      user_name:
+        description: User Name
+        type: string
+    required:
+    - captcha_code
+    - captcha_id
+    - password
+    - user_name
+    type: object
+  request.Menu:
+    properties:
+      created_at:
+        description: CreatedAt
+        type: string
+      creator:
+        description: Creator
+        type: string
+      icon:
+        description: Icon
+        type: string
+      id:
+        description: ID
+        type: string
+      memo:
+        description: Memo
+        type: string
+      name:
+        description: Name
+        type: string
+      parent_id:
+        description: Parent ID
+        type: string
+      parent_path:
+        description: Parent Path
+        type: string
+      router:
+        description: Router
+        type: string
+      sequence:
+        description: Sequence
+        type: integer
+      show_status:
+        description: Show Status(1:show 2:hide)
+        maximum: 2
+        minimum: 1
+        type: integer
+      status:
+        description: Menu Status(1:enable 2:disable)
+        maximum: 2
+        minimum: 1
+        type: integer
+      updated_at:
+        description: UpdatedAt
+        type: string
+    required:
+    - name
+    - show_status
+    - status
+    type: object
+  request.Role:
+    properties:
+      created_at:
+        description: CreatedAt
+        type: string
+      creator:
+        description: Creator
+        type: string
+      memo:
+        description: Memo
+        type: string
+      name:
+        description: Name
+        type: string
+      sequence:
+        description: Sequence
+        type: integer
+      status:
+        description: Status(1:enable 2:disable)
+        maximum: 2
+        minimum: 1
+        type: integer
+      updated_at:
+        description: UpdatedAt
+        type: string
+    required:
+    - name
+    - status
+    type: object
+  request.UpdatePasswordParam:
+    properties:
+      new_password:
+        description: New Password
+        type: string
+      old_password:
+        description: Old Password
+        type: string
+    required:
+    - new_password
+    - old_password
+    type: object
+  request.User:
+    properties:
+      created_at:
+        description: CreatedAt
+        type: string
+      creator:
+        description: Creator
+        type: string
+      email:
+        description: Email
+        type: string
+      id:
+        description: ID
+        type: string
+      password:
+        description: Password
+        type: string
+      phone:
+        description: Phone
+        type: string
+      real_name:
+        description: Real Name
+        type: string
+      role_ids:
+        description: RoleIDs
+        items:
+          type: string
+        type: array
+      status:
+        description: Status(1:enable 2:disable)
+        type: integer
+      user_name:
+        description: User Name
+        type: string
+    type: object
+  response.ErrorItem:
+    properties:
+      code:
+        description: Error Code
+        type: integer
+      message:
+        description: Error Message
+        type: string
+    type: object
+  response.ErrorResult:
+    properties:
+      error:
+        allOf:
+        - $ref: '#/definitions/response.ErrorItem'
+        description: Error
+    type: object
+  response.HealthCheck:
+    properties:
+      checked_at:
+        description: CheckedAt
+        type: string
+      status:
+        description: Status
+        type: string
+    type: object
+  response.IDResult:
+    properties:
+      id:
+        type: string
+    type: object
+  response.ListResult:
+    properties:
+      list:
+        description: List
+      pagination:
+        allOf:
+        - $ref: '#/definitions/pagination.Pagination'
+        description: Pagination
+    type: object
+  response.LoginCaptcha:
+    properties:
+      captcha_id:
+        description: Captcha ID
+        type: string
+    type: object
+  response.LoginTokenInfo:
+    properties:
+      access_token:
+        description: Access Token
+        type: string
+      expires_at:
+        description: Expires At
+        type: integer
+      token_type:
+        description: Token Type
+        type: string
+    type: object
+  response.Menu:
+    properties:
+      actions:
+        description: Actions
+        items:
+          $ref: '#/definitions/response.MenuAction'
+        type: array
+      created_at:
+        description: CreatedAt
+        type: string
+      creator:
+        description: Creator
+        type: string
+      icon:
+        description: Icon
+        type: string
+      id:
+        description: ID
+        type: string
+      memo:
+        description: Memo
+        type: string
+      name:
+        description: Name
+        type: string
+      parent_id:
+        description: Parent ID
+        type: string
+      parent_path:
+        description: Parent Path
+        type: string
+      router:
+        description: Router
+        type: string
+      sequence:
+        description: Sequence
+        type: integer
+      show_status:
+        description: Show Status(1:show 2:hide)
+        maximum: 2
+        minimum: 1
+        type: integer
+      status:
+        description: Menu Status(1:enable 2:disable)
+        maximum: 2
+        minimum: 1
+        type: integer
+      updated_at:
+        description: UpdatedAt
+        type: string
+    required:
+    - name
+    - show_status
+    - status
+    type: object
+  response.MenuAction:
+    properties:
+      code:
+        type: string
+      id:
+        type: string
+      menu_id:
+        type: string
+      name:
+        type: string
+      resources:
+        items:
+          $ref: '#/definitions/response.MenuActionResource'
+        type: array
+    required:
+    - code
+    - menu_id
+    - name
+    type: object
+  response.MenuActionResource:
+    properties:
+      action_id:
+        type: string
+      id:
+        type: string
+      method:
+        type: string
+      path:
+        type: string
+    required:
+    - method
+    - path
+    type: object
+  response.MenuTree:
+    properties:
+      actions:
+        items:
+          $ref: '#/definitions/response.MenuAction'
+        type: array
+      children:
+        items:
+          $ref: '#/definitions/response.MenuTree'
+        type: array
+      icon:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      parent_id:
+        type: string
+      parent_path:
+        type: string
+      router:
+        type: string
+      sequence:
+        type: integer
+      show_status:
+        description: 1:show 2:hide
+        type: integer
+      status:
+        description: 1:enable 2:disable
+        type: integer
+    type: object
+  response.Role:
+    properties:
+      created_at:
+        description: CreatedAt
+        type: string
+      creator:
+        description: Creator
+        type: string
+      id:
+        description: ID
+        type: string
+      memo:
+        description: Memo
+        type: string
+      name:
+        description: Name
+        type: string
+      role_menus:
+        description: RoleMenus
+        items:
+          $ref: '#/definitions/response.RoleMenu'
+        type: array
+      sequence:
+        description: Sequence
+        type: integer
+      status:
+        description: Status(1:enable 2:disable)
+        type: integer
+      updated_at:
+        description: UpdatedAt
+        type: string
+    type: object
+  response.RoleMenu:
+    properties:
+      action_id:
+        description: Action ID
+        type: string
+      id:
+        description: ID
+        type: string
+      menu_id:
+        description: Menu ID
+        type: string
+      role_id:
+        description: Role ID
+        type: string
+    required:
+    - action_id
+    - menu_id
+    - role_id
+    type: object
+  response.StatusResult:
+    properties:
+      status:
+        allOf:
+        - $ref: '#/definitions/response.StatusText'
+        description: Result status
+    type: object
+  response.StatusText:
+    enum:
+    - OK
+    - ERROR
+    - FAIL
+    type: string
+    x-enum-varnames:
+    - OKStatus
+    - ErrorStatus
+    - FailStatus
+  response.User:
+    properties:
+      created_at:
+        description: CreatedAt
+        type: string
+      creator:
+        description: Creator
+        type: string
+      email:
+        description: Email
+        type: string
+      id:
+        description: ID
+        type: string
+      password:
+        description: Password
+        type: string
+      phone:
+        description: Phone
+        type: string
+      real_name:
+        description: Real Name
+        type: string
+      status:
+        description: Status(1:enable 2:disable)
+        maximum: 2
+        minimum: 1
+        type: integer
+      user_name:
+        description: User Name
+        type: string
+      user_roles:
+        description: UserRoles
+        items:
+          $ref: '#/definitions/response.UserRole'
+        type: array
+    required:
+    - real_name
+    - status
+    - user_name
+    - user_roles
+    type: object
+  response.UserLoginInfo:
+    properties:
+      real_name:
+        description: Real Name
+        type: string
+      roles:
+        description: Role
+        items:
+          $ref: '#/definitions/response.Role'
+        type: array
+      user_id:
+        description: User ID
+        type: string
+      user_name:
+        description: User Name
+        type: string
+    type: object
+  response.UserRole:
+    properties:
+      id:
+        description: ID
+        type: string
+      role_id:
+        description: Role ID
+        type: string
+      user_id:
+        description: User ID
+        type: string
+    type: object
+  response.UserShow:
+    properties:
+      created_at:
+        description: CreatedAt
+        type: string
+      email:
+        description: Email
+        type: string
+      id:
+        description: ID
+        type: string
+      phone:
+        description: Phone
+        type: string
+      real_name:
+        description: Real Name
+        type: string
+      roles:
+        description: Roles
+        items:
+          $ref: '#/definitions/response.Role'
+        type: array
+      status:
+        description: Status(1:enable 2:disable)
+        type: integer
+      user_name:
+        description: User Name
+        type: string
+    type: object
+info:
+  contact: {}
+  description: RBAC scaffolding based on DDD + GIN + GORM + CASBIN + WIRE.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: kai
+  version: 0.2.0
+paths:
+  /api/health:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.HealthCheck'
+      summary: HealthCheck
+      tags:
+      - HealthCheck
+  /api/v1/menus:
+    get:
+      parameters:
+      - default: 1
+        description: Current page
+        in: query
+        name: current
+        required: true
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        required: true
+        type: integer
+      - description: Search value
+        in: query
+        name: queryValue
+        type: string
+      - description: Status(1:enable 2:disable)
+        in: query
+        name: status
+        type: integer
+      - description: Show status(1:show 2:hide)
+        in: query
+        name: showStatus
+        type: integer
+      - description: Parent ID
+        in: query
+        name: parentID
+        type: string
+      responses:
+        "200":
+          description: Search Result
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ListResult'
+            - properties:
+                list:
+                  items:
+                    $ref: '#/definitions/response.Menu'
+                  type: array
+              type: object
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Search menu
+      tags:
+      - Menu
+    post:
+      parameters:
+      - description: Create
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request.Menu'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.IDResult'
+        "400":
+          description: '{error:{code:0,message:BadRequest}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Create
+      tags:
+      - Menu
+  /api/v1/menus.tree:
+    get:
+      parameters:
+      - description: Status(1:enable 2:disable)
+        in: query
+        name: status
+        type: integer
+      - description: Parent ID
+        in: query
+        name: parentID
+        type: string
+      responses:
+        "200":
+          description: Search Result
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ListResult'
+            - properties:
+                list:
+                  items:
+                    $ref: '#/definitions/response.MenuTree'
+                  type: array
+              type: object
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Search menu tree
+      tags:
+      - Menu
+  /api/v1/menus/{id}:
+    delete:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/response.StatusResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete
+      tags:
+      - Menu
+    get:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Menu'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "404":
+          description: '{error:{code:0,message:NotFound}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Get by ID
+      tags:
+      - Menu
+    put:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request.Menu'
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/response.StatusResult'
+        "400":
+          description: '{error:{code:0,message:BadRequest}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Update
+      tags:
+      - Menu
+  /api/v1/menus/{id}/disable:
+    patch:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/response.StatusResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Disable
+      tags:
+      - Menu
+  /api/v1/menus/{id}/enable:
+    patch:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/response.StatusResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Enable
+      tags:
+      - Menu
+  /api/v1/pub/current/menutree:
+    get:
+      responses:
+        "200":
+          description: Search Result
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ListResult'
+            - properties:
+                list:
+                  items:
+                    $ref: '#/definitions/response.MenuTree'
+                  type: array
+              type: object
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Get user menu tree
+      tags:
+      - Login
+  /api/v1/pub/current/password:
+    put:
+      parameters:
+      - description: Request parameters
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdatePasswordParam'
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/response.StatusResult'
+        "400":
+          description: '{error:{code:0,message:BadRequest}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Update password
+      tags:
+      - Login
+  /api/v1/pub/current/user:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.UserLoginInfo'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Get current user info
+      tags:
+      - Login
+  /api/v1/pub/login:
+    post:
+      parameters:
+      - description: Request parameters
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoginParam'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.LoginTokenInfo'
+        "400":
+          description: '{error:{code:0,message:BadRequest}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      summary: Login
+      tags:
+      - Login
+  /api/v1/pub/login/captcha:
+    get:
+      parameters:
+      - description: Captcha ID
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: Reload
+        in: query
+        name: reload
+        type: string
+      produces:
+      - image/png
+      responses:
+        "200":
+          description: ResCaptcha
+        "400":
+          description: '{error:{code:0,message:BadRequest}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      summary: Response captcha
+      tags:
+      - Login
+  /api/v1/pub/login/captchaid:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.LoginCaptcha'
+      summary: Get Captcha
+      tags:
+      - Login
+  /api/v1/pub/login/exit:
+    post:
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/response.StatusResult'
+      summary: Logout
+      tags:
+      - Login
+  /api/v1/pub/refresh-token:
+    post:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.LoginTokenInfo'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Refresh token
+      tags:
+      - Login
+  /api/v1/roles:
+    get:
+      parameters:
+      - default: 1
+        description: Current page
+        in: query
+        name: current
+        required: true
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        required: true
+        type: integer
+      - description: Search value
+        in: query
+        name: queryValue
+        type: string
+      - description: Status(1:enable 2:disable)
+        in: query
+        name: status
+        type: integer
+      responses:
+        "200":
+          description: Search Result
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ListResult'
+            - properties:
+                list:
+                  items:
+                    $ref: '#/definitions/response.Role'
+                  type: array
+              type: object
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Search role
+      tags:
+      - Role
+    post:
+      parameters:
+      - description: Create
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request.Role'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.IDResult'
+        "400":
+          description: '{error:{code:0,message:BadRequest}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Create
+      tags:
+      - Role
+  /api/v1/roles.select:
+    get:
+      parameters:
+      - description: Search value
+        in: query
+        name: queryValue
+        type: string
+      - description: Status(1:enable 2:disable)
+        in: query
+        name: status
+        type: integer
+      responses:
+        "200":
+          description: Search Result
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ListResult'
+            - properties:
+                list:
+                  items:
+                    $ref: '#/definitions/response.Role'
+                  type: array
+              type: object
+        "400":
+          description: '{error:{code:0,message:未知的查询类型}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Search selected data
+      tags:
+      - Role
+  /api/v1/roles/{id}:
+    delete:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/response.StatusResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete
+      tags:
+      - Role
+    get:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Role'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "404":
+          description: '{error:{code:0,message:NotFound}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Get by ID
+      tags:
+      - Role
+    put:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request.Role'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Role'
+        "400":
+          description: '{error:{code:0,message:BadRequest}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Update
+      tags:
+      - Role
+  /api/v1/roles/{id}/disable:
+    patch:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/response.StatusResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Disable
+      tags:
+      - Role
+  /api/v1/roles/{id}/enable:
+    patch:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/response.StatusResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Enable
+      tags:
+      - Role
+  /api/v1/users:
+    get:
+      parameters:
+      - default: 1
+        description: Current page
+        in: query
+        name: current
+        required: true
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        required: true
+        type: integer
+      - description: Search value
+        in: query
+        name: queryValue
+        type: string
+      - description: Role IDs(Comma division)
+        in: query
+        name: roleIDs
+        type: string
+      - description: 'Status (1: Enabled 2: Disabled)'
+        in: query
+        name: status
+        type: integer
+      responses:
+        "200":
+          description: Search Result
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.ListResult'
+            - properties:
+                list:
+                  items:
+                    $ref: '#/definitions/response.UserShow'
+                  type: array
+              type: object
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Search user
+      tags:
+      - User
+    post:
+      parameters:
+      - description: Create
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request.User'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.IDResult'
+        "400":
+          description: '{error:{code:0,message:BadRequest}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Create
+      tags:
+      - User
+  /api/v1/users/{id}:
+    delete:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/response.StatusResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete
+      tags:
+      - User
+    get:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.User'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "404":
+          description: '{error:{code:0,message:NotFound}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Get by ID
+      tags:
+      - User
+    put:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request.User'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.User'
+        "400":
+          description: '{error:{code:0,message:BadRequest}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Update
+      tags:
+      - User
+  /api/v1/users/{id}/disable:
+    patch:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/response.StatusResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Disable
+      tags:
+      - User
+  /api/v1/users/{id}/enable:
+    patch:
+      parameters:
+      - description: UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/response.StatusResult'
+        "401":
+          description: '{error:{code:0,message:Unauthorized}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:SystemError}}'
+          schema:
+            $ref: '#/definitions/response.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: Enable
+      tags:
+      - User
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

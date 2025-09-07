@@ -1,0 +1,47 @@
+# doc: https://skaffold.dev/docs/references/yaml
+apiVersion: skaffold/v4beta11
+kind: Config
+
+profiles:
+  - name: dev
+    build:
+      local:
+        concurrency: 0
+        tryImportMissing: true
+      tagPolicy:
+        gitCommit: {}
+      artifacts:
+        - image: kai
+          docker:
+            dockerfile: dev.Dockerfile
+#          sync:
+#            manual:
+#              - src: 'configs/*'
+#                dest: "/"
+    deploy:
+      statusCheckDeadlineSeconds: 120
+      helm:
+        releases:
+          - name: mariadb
+            repo: https://charts.bitnami.com/bitnami
+            remoteChart: mariadb
+            version: 11.5.1
+            namespace: mariadb
+            wait: true
+            createNamespace: true
+            setValues:
+              auth.database: kai
+              auth.rootPassword: password#123
+          - name: kai
+            repo: https://kackerx.github.io/helm-charts
+            remoteChart: web
+            version: 0.1.4
+            namespace: kai
+            createNamespace: true
+            setValueTemplates:
+              image.repository: "{{.IMAGE_NAME}}"
+              image.tag: "{{.IMAGE_TAG}}"
+            valuesFiles:
+              - ./helm/values/base.values.yaml
+              - ./helm/values/local.values.yaml
+

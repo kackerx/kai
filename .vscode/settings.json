@@ -1,0 +1,50 @@
+{
+    "go.toolsManagement.autoUpdate": true,
+    "go.useLanguageServer": true,
+    "go.lintOnSave": "package",
+    "go.vetOnSave": "package",
+    "go.formatTool": "goimports",
+    "go.lintTool": "golangci-lint",
+    "go.buildOnSave": "off",
+    "go.testOnSave": false,
+    "go.coverOnSave": false,
+    "go.gocodeAutoBuild": false,
+    "go.inferGopath": false,
+    "go.gotoSymbol.includeImports": true,
+    "go.gotoSymbol.includeGoroot": true,
+    "go.autocompleteUnimportedPackages": true,
+    "go.docsTool": "godoc",
+    "go.alternateTools": {
+        "go": "go"
+    },
+    "go.testFlags": ["-v", "-race"],
+    "go.testTimeout": "30s",
+    "go.coverMode": "atomic",
+    "files.exclude": {
+        "**/data/*.db": true,
+        "**/data/*.log": true,
+        "**/.DS_Store": true
+    },
+    "files.watcherExclude": {
+        "**/data/**": true,
+        "**/vendor/**": true,
+        "**/node_modules/**": true
+    },
+    "search.exclude": {
+        "**/vendor": true,
+        "**/node_modules": true,
+        "**/data": true
+    },
+    "[go]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "[go.mod]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    }
+}
