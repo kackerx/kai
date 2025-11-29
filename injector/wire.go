@@ -63,6 +63,7 @@ func BuildApiInjector() (*ApiInjector, func(), error) {
 		handler.NewRole,
 		handler.NewMenu,
 		handler.NewLogin,
+		handler.NewTest,
 
 		// router
 		router.NewRouter,

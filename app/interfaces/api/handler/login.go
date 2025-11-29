@@ -79,10 +79,10 @@ func (a *login) Login(c *gin.Context) {
 		return
 	}
 
-	if !captcha.VerifyString(item.CaptchaID, item.CaptchaCode) {
-		api.ResError(c, errors.New400Response("Invalid Captcha"))
-		return
-	}
+	// if !captcha.VerifyString(item.CaptchaID, item.CaptchaCode) {
+	// 	api.ResError(c, errors.New400Response("Invalid Captcha"))
+	// 	return
+	// }
 
 	user, err := a.loginApp.Verify(ctx, item.UserName, item.Password)
 	if err != nil {

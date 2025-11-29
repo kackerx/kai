@@ -16,6 +16,7 @@ import (
 )
 
 type Login interface {
+	// 确实
 	Verify(ctx context.Context, userName, password string) (*user.User, error)
 	GenerateToken(ctx context.Context, userID string) (*auth.Auth, error)
 	DestroyToken(ctx context.Context, tokenString string) error

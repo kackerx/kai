@@ -1,3 +1,4 @@
+
 NOW = $(shell date -u '+%Y%m%d%I%M%S')
 
 RELEASE_VERSION = v1.0.0
@@ -68,3 +69,8 @@ skaffold-dev:
 .PHONY: tunnel-svc-with-minikube
 tunnel-svc-with-minikube:
 	minikube service kai-web --url -n kai
+
+.PHONY: mock
+mock:
+	@mockgen -source=app/application/login.go -destination=app/application/mock/login_gen.go -package=appmock
+	@go mod tidy

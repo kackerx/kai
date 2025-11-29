@@ -17,7 +17,10 @@
     "go.alternateTools": {
         "go": "go"
     },
-    "go.testFlags": ["-v", "-race"],
+    "go.testFlags": [
+        "-v",
+        "-race"
+    ],
     "go.testTimeout": "30s",
     "go.coverMode": "atomic",
     "files.exclude": {
@@ -46,5 +49,74 @@
         "editor.codeActionsOnSave": {
             "source.organizeImports": "explicit"
         }
-    }
+    },
+    "debugConsoleBeautify.enabled": true,
+    "debugConsoleBeautify.formatJSON": true,
+    "debugConsoleBeautify.theme": "dark",
+    "debugConsoleBeautify.rules": [
+        {
+            "pattern": "error|ERROR|Error",
+            "color": {
+                "dark": "#ff6464",
+                "light": "#ff6464"
+            },
+            "bold": true
+        },
+        {
+            "pattern": "INFO*SELECT",
+            "color": {
+                "dark": "#ff0000",
+                "light": "#ff0000"
+            }
+        },
+        {
+            "pattern": "time",
+            "color": {
+                "dark": "#ff0000",
+                "light": "#ff0000"
+            }
+        },
+        {
+            "pattern": "info|INFO|Info",
+            "color": {
+                "dark": "#6BB6FF",
+                "light": "#0066CC"
+            }
+        },
+        {
+            "pattern": "warn|WARN|Warn",
+            "color": {
+                "dark": "#ff6464",
+                "light": "#ff6464"
+            }
+        },
+        {
+            "pattern": "panic|PANIC|Panic",
+            "color": {
+                "dark": "#FF5555",
+                "light": "#CC0000"
+            }
+        },
+        {
+            "pattern": "GIN-debug",
+            "color": {
+                "dark": "#eeff05",
+                "light": "#eeff05"
+            }
+        },
+        {
+            "pattern": "GIN",
+            "color": {
+                "dark": "#ff0000",
+                "light": "#ff0000"
+            }
+        },
+        {
+            "pattern": "*SELECT.*?FROM.*?WHERE.*?$",
+            "color": {
+                "dark": "#ff0000",
+                "light": "#ff0000"
+            }
+        }
+    ]
 }

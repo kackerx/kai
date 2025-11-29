@@ -1,15 +1,37 @@
 package router
 
 import (
+	"context"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/kackerx/kai/app/interfaces/api/middleware"
 )
+
+func WrapRequest[T, R any](fn func(ctx context.Context, req T) (R, error)) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		var req T
+
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		resp, err := fn(c.Request.Context(), req)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, resp)
+	}
+}
 
 // RegisterAPI register api group router
 func (a *router) RegisterAPI(app *gin.Engine) {
 	g := app.Group("/api")
 	g.Use(middleware.UserAuthMiddleware(a.auth,
-		middleware.AllowPathPrefixSkipper("/api/v1/pub/login"),
+		middleware.AllowPathPrefixSkipper("/api/v1/pub/login", "/api/v1/pub/test"),
 	))
 
 	g.Use(middleware.CasbinMiddleware(a.casbinEnforcer,
@@ -22,6 +44,10 @@ func (a *router) RegisterAPI(app *gin.Engine) {
 	{
 		pub := v1.Group("/pub")
 		{
+			gTest := pub.Group("test")
+			{
+				gTest.POST("", WrapRequest(a.testHandler.TestWrap))
+			}
 			gLogin := pub.Group("login")
 			{
 				gLogin.GET("captchaid", a.loginHandler.GetCaptcha)

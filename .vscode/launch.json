@@ -15,7 +15,7 @@
             ],
             "env": {},
             "cwd": "${workspaceFolder}",
-            "showLog": true,
+            "showLog": false,
             "trace": "verbose"
         },
         {
