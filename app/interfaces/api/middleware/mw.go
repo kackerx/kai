@@ -1,7 +1,9 @@
 package middleware
 
 import (
+	"context"
 	"fmt"
+	"net/http"
 	"strings"
 
 	"github.com/kackerx/kai/app/domain/errors"
@@ -86,5 +88,21 @@ func SkipHandler(c *gin.Context, skippers ...SkipperFunc) bool {
 func EmptyMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
+	}
+}
+
+func WrapRequest[T, R any](fn func(ctx context.Context, req T) (R, error)) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		var req T
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		resp, err := fn(c.Request.Context(), req)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, resp)
 	}
 }

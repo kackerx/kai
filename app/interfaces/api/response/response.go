@@ -27,6 +27,12 @@ type ErrorItem struct {
 	Message string `json:"message"` // Error Message
 }
 
+type CommonResult struct {
+	Code    int    `json:"code"`    // Error Code
+	Message string `json:"message"` // Error Message
+	Data    any    `json:"data"`    // Data
+}
+
 type ListResult struct {
 	List       interface{}            `json:"list"`                 // List
 	Pagination *pagination.Pagination `json:"pagination,omitempty"` // Pagination

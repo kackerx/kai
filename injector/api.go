@@ -122,3 +122,7 @@ EXIT:
 	os.Exit(state)
 	return nil
 }
+
+func (a *ApiInjector) Engine() *gin.Engine {
+	return a.engine
+}

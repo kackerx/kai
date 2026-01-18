@@ -1,4 +1,10 @@
 {
+    // "gopls": {
+    //     "build.flags": [
+    //         "-tags=wireinject"
+    //     ]
+    // },
+    // "go.buildTags": "wireinject", 
     "go.toolsManagement.autoUpdate": true,
     "go.useLanguageServer": true,
     "go.lintOnSave": "package",

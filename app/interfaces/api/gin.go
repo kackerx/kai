@@ -88,8 +88,12 @@ func ResPage(c *gin.Context, v interface{}, pr *pagination.Pagination) {
 	ResSuccess(c, list)
 }
 
-func ResSuccess(c *gin.Context, v interface{}) {
-	ResJSON(c, http.StatusOK, v)
+func ResSuccess(c *gin.Context, v any) {
+	ResJSON(c, http.StatusOK, response.CommonResult{
+		Code:    0,
+		Message: "success",
+		Data:    v,
+	})
 }
 
 func ResJSON(c *gin.Context, status int, v interface{}) {

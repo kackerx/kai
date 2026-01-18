@@ -21,6 +21,7 @@ func NewRouter(
 	userHandler handler.User,
 	healthHandler handler.HealthCheck,
 	testHandler handler.Test,
+	articleHandler handler.Article,
 ) Router {
 	return &router{
 		auth:           auth,
@@ -31,6 +32,7 @@ func NewRouter(
 		userHandler:    userHandler,
 		healthHandler:  healthHandler,
 		testHandler:    testHandler,
+		articleHandler: articleHandler,
 	}
 }
 
@@ -43,6 +45,7 @@ type router struct {
 	userHandler    handler.User
 	healthHandler  handler.HealthCheck
 	testHandler    handler.Test
+	articleHandler handler.Article
 }
 
 func (a *router) Register(app *gin.Engine) error {
